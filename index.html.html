@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Permintaan pick Shopee — Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F5F4F1;--card:#FFFFFF;--line:#E7E5E4;--line2:#F0EEEC;--input:#D6D3D1;
+  --text:#1C1917;--muted:#57534E;--muted2:#78716C;
+  --orange:#EA580C;--orange-d:#C2410C;--orange-bg:#FFF1E8;
+  --blue:#1D4ED8;--green:#15803D;--red:#B91C1C;--red-l:#FCA5A5;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif}
+a{color:var(--orange-d)}a:hover{color:#9A3412}
+button,input,select{font-family:inherit}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+header{background:var(--card);border-bottom:1px solid var(--line);padding:0 24px}
+nav{max-width:1480px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:4px;min-height:56px}
+nav a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;font-size:14px;font-weight:500;color:var(--muted);text-decoration:none}
+nav a.on{font-weight:600;color:var(--orange-d);background:var(--orange-bg)}
+main{max-width:1480px;margin:0 auto;padding:28px 24px 64px;display:flex;flex-direction:column;gap:20px}
+.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px}
+h1{margin:0;font-size:32px;line-height:1.15;font-weight:800;letter-spacing:-0.02em}
+.top p{margin:6px 0 0;font-size:14px;color:var(--muted)}
+.search{display:flex;align-items:center;gap:8px;height:44px;padding:0 14px;background:var(--card);border:1px solid var(--input);border-radius:10px;min-width:280px}
+.search input{border:0;outline:none;font-size:14px;flex:1;background:transparent}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:6px}
+.stat b{font-size:13px;font-weight:600;color:var(--muted)}
+.stat strong{font-size:32px;font-weight:800;line-height:1}
+.stat span{font-size:12px;color:var(--muted2)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.tabs{display:flex;flex-wrap:wrap;gap:6px}
+.tab{height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--input);background:var(--card);color:#44403C;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px}
+.tab span{background:#F5F5F4;border-radius:999px;padding:1px 8px;font-size:12px;color:var(--muted)}
+.tab[aria-selected=true]{border-color:var(--orange);background:var(--orange);color:#fff}
+.tab[aria-selected=true] span{background:rgba(255,255,255,.25);color:#fff}
+.sw{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.toggle{width:44px;height:26px;border-radius:999px;border:0;padding:3px;cursor:pointer;background:#A8A29E;display:flex;justify-content:flex-start}
+.toggle[aria-pressed=true]{background:var(--orange);justify-content:flex-end}
+.toggle i{width:20px;height:20px;border-radius:999px;background:#fff;display:block}
+.filters{display:flex;flex-wrap:wrap;gap:8px;padding:14px 16px;background:#FAFAF9;border-bottom:1px solid var(--line)}
+.filters label{flex:1 1 130px}
+.filters input,.filters select,.gsel{width:100%;height:40px;padding:0 10px;border:1px solid var(--input);border-radius:8px;font-size:13px;background:#fff}
+.btn{height:40px;padding:0 14px;border:1px solid var(--input);border-radius:8px;background:#fff;font-size:13px;font-weight:600;color:#44403C;cursor:pointer;display:flex;align-items:center;gap:6px}
+.bulk{display:none;flex-wrap:wrap;align-items:center;gap:10px;padding:10px 16px;background:var(--text);color:#fff;font-size:13px}
+.bulk.on{display:flex}
+.bulk button{height:36px;padding:0 12px;border-radius:8px;border:1px solid var(--muted);background:transparent;color:#fff;font-size:13px;font-weight:600;cursor:pointer}
+.bulk .danger{border:0;background:#DC2626}
+.scroll{overflow-x:auto}
+.table{min-width:1180px}
+.grid{display:grid;grid-template-columns:28px minmax(300px,2.4fr) 150px 40px 120px minmax(190px,1.2fr) 90px 120px;gap:14px;align-items:center}
+.head{padding:12px 16px;border-bottom:1px solid var(--line);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.rw{padding:14px 16px;border-bottom:1px solid var(--line2)}
+.rw:hover{background:#FFFAF5}
+.cb{width:18px;height:18px;accent-color:var(--orange)}
+.item{display:flex;align-items:center;gap:12px;min-width:0}
+.thumb{width:64px;height:64px;flex:none;border-radius:8px;background:#F5F5F4;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--muted2)}
+.nm{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sub{font-size:12px;color:var(--muted2)}
+.col{display:flex;flex-direction:column;gap:3px;min-width:0}
+.inv{font-size:13px;font-weight:600}
+.chip{display:inline-flex;width:fit-content;font-size:10px;font-weight:700;color:var(--orange-d);background:var(--orange-bg);border-radius:4px;padding:2px 6px}
+.steps{display:flex;align-items:center;gap:4px;margin-bottom:6px}
+.steps .d{width:10px;height:10px;border-radius:999px;background:var(--line)}
+.steps .l{flex:1;height:2px;background:var(--line)}
+.st{font-size:13px;font-weight:700}
+.act{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.sm{height:34px;padding:0 12px;border-radius:8px;background:#fff;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px}
+.sm.rem{border:1px solid var(--orange);color:var(--orange-d)}
+.sm.can{border:1px solid var(--red-l);color:var(--red)}
+.photos{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0 0 42px}
+.ph{width:140px;height:140px;padding:0;border-radius:8px;border:1px solid var(--input);background:var(--line);cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;align-items:center;overflow:hidden}
+.ph:hover{outline:2px solid var(--orange);outline-offset:1px}
+.ph svg{margin-top:40px}
+.ph span{width:100%;font-size:11px;font-weight:700;color:#fff;padding:5px 0}
+.empty{width:140px;height:140px;border-radius:8px;border:1.5px dashed var(--input);display:flex;align-items:center;justify-content:center;text-align:center;font-size:12px;font-weight:600;color:var(--muted2);line-height:1.3}
+.hidephotos .photos{display:none}
+.foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;font-size:13px;color:var(--muted)}
+.modal{position:fixed;inset:0;background:rgba(28,25,23,.6);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
+.modal.on{display:flex}
+.dlg{background:#fff;border-radius:16px;width:100%;max-width:560px;overflow:hidden}
+.dlg header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--line)}
+.big{height:380px;background:var(--line);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted)}
+.dlg footer{display:flex;justify-content:flex-end;gap:8px;padding:12px 16px}
+.primary{border:0;background:var(--orange);color:#fff}
+</style>
+</head>
+<body>
+<header>
+<nav aria-label="Menu utama">
+<a href="#">Dashboard</a>
+<a href="#" class="on">Shopee · Permintaan pick</a>
+<a href="#">Tokopedia</a>
+<a href="#">Pembayaran</a>
+<a href="#">Outside Orders</a>
+</nav>
+</header>
+
+<main>
+<div class="top">
+<div>
+<h1>Permintaan pick — Shopee</h1>
+<p>Satu halaman untuk alur penuh: diminta, diambil gudang, lalu dipacking — lengkap dengan foto bukti pick &amp; pack.</p>
+</div>
+<label class="search">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#78716C" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+<span class="sr">Cari order, resi, atau invoice</span>
+<input type="search" placeholder="Cari order / resi / invoice (semua tanggal)">
+</label>
+</div>
+
+<section class="stats" aria-label="Ringkasan">
+<div class="stat"><b>Belum diambil</b><strong style="color:var(--orange-d)">8</strong><span>5 di ALPHA · 3 di SS</span></div>
+<div class="stat"><b>Tertua</b><strong style="color:var(--orange-d)">2 hari</strong><span>Sejak 7 Nov 26</span></div>
+<div class="stat"><b>Diambil hari ini</b><strong>42</strong><span>Foto pick lengkap 39 / 42</span></div>
+<div class="stat"><b>Dipacking hari ini</b><strong style="color:var(--green)">128</strong><span>paket · 162 barang · 53 belum dicek</span></div>
+</section>
+
+<section class="panel" id="panel">
+<div class="bar">
+<div class="tabs" role="tablist" aria-label="Status" id="tabs"></div>
+<div class="sw"><span>Tampilkan foto</span><button type="button" class="toggle" id="tgl" aria-pressed="true" aria-label="Tampilkan foto"><i></i></button></div>
+</div>
+
+<div class="filters">
+<label><span class="sr">Invoice</span><input placeholder="Invoice"></label>
+<label><span class="sr">ID barang</span><input placeholder="ID barang"></label>
+<label><span class="sr">Gudang</span><select><option>Semua gudang</option><option>SS</option><option>ALPHA</option><option>SIGMA</option></select></label>
+<label><span class="sr">Sumber</span><select><option>Semua</option><option>Shopee</option></select></label>
+<label><span class="sr">Nama atau catatan</span><input placeholder="Nama / catatan"></label>
+<label><span class="sr">Dari tanggal</span><input type="date"></label>
+<label><span class="sr">Sampai tanggal</span><input type="date"></label>
+<label style="flex:0 1 110px"><span class="sr">Jumlah baris</span><select><option>50 baris</option><option>100 baris</option></select></label>
+<button type="button" class="btn">↺ Reset</button>
+</div>
+
+<div class="bulk" id="bulk">
+<span style="font-weight:600" id="selc">0 dipilih</span><span style="flex:1"></span>
+<button type="button">Ubah gudang</button><button type="button">Kirim reminder</button>
+<button type="button" class="danger">Batalkan</button>
+<button type="button" id="clr" aria-label="Hapus pilihan">✕</button>
+</div>
+
+<div class="scroll"><div class="table" role="table" aria-label="Daftar permintaan pick">
+<div class="grid head" role="row">
+<span role="columnheader"><input type="checkbox" class="cb" id="all" aria-label="Pilih semua"></span>
+<span role="columnheader">Barang</span><span role="columnheader">Pesanan</span>
+<span role="columnheader" style="text-align:center">Qty</span><span role="columnheader">Gudang</span>
+<span role="columnheader">Progres</span><span role="columnheader">Dibuat</span>
+<span role="columnheader" style="text-align:right">Aksi</span>
+</div>
+<div id="rows"></div>
+</div></div>
+
+<div class="foot"><span id="cnt"></span><div style="display:flex;gap:6px"><button type="button" class="btn">Sebelumnya</button><button type="button" class="btn">Berikutnya</button></div></div>
+</section>
+</main>
+
+<div class="modal" id="modal">
+<div class="dlg" role="dialog" aria-label="Pratinjau foto">
+<header><div class="col"><span style="font-size:15px;font-weight:700" id="mt"></span><span class="sub" id="ms"></span></div>
+<button type="button" class="btn" data-close aria-label="Tutup" style="border:0">✕</button></header>
+<div class="big" id="mb"></div>
+<footer><button type="button" class="btn">Unduh</button><button type="button" class="btn primary" data-close>Tutup</button></footer>
+</div>
+</div>
+
+<script>
+// Data contoh — ganti dengan data asli dari API
+var DATA = [
+  {id:'213529',bc:'4573628560943',ini:'FW',name:'fuwa petit / fuwa plush Mascot Hinomori Shizuku - Brand New World',inv:'261109TEATSTAK',g:'SS',st:'belum',age:'0 hari',by:'Novira'},
+  {id:'200708',bc:'4573628551200',ini:'FW',name:'fuwa petit / fuwa plush Mascot Hinomori Shizuku - MORE MORE JUMP!',inv:'261109TEATSTAK',g:'ALPHA',st:'belum',age:'0 hari',by:'Novira'},
+  {id:'221895',bc:'4580590191234',ini:'ND',name:'Nendoroid Joo Jaekyung - Jinx',inv:'261109TET33KKN',g:'SS',st:'belum',age:'0 hari',by:'Novira'},
+  {id:'132733',bc:'6971234500123',ini:'MP',name:'Sunaookami Shiroko Jumbo Mousepad - Blue Archive (90x50cm)',inv:'261109TEUHTUDR',g:'ALPHA',st:'belum',age:'0 hari',by:'Novira'},
+  {id:'166070',bc:'4983164123456',ini:'PD',name:'Premium Desktop x Decorate Figure Hinomori Shizuku - MORE MORE JUMP!',inv:'261109TDC7DUJU',g:'ALPHA',st:'belum',age:'0 hari',by:'Novira'},
+  {id:'138278',bc:'4582655012345',ini:'CF',name:'Coreful Figure Nishikigi Chisato - School Uniform ver. Lycoris Recoil',inv:'261107MQAVEM0E',g:'SIGMA',st:'diambil',picker:'Novira',info:'9 Nov 26 · Ambil sendiri (extension)',by:'Novira'},
+  {id:'161989',bc:'4582655067890',ini:'CF',name:'Coreful Figure Nishikigi Chisato - Hawaiian Ver. Lycoris Recoil',inv:'261109SW4K3WME',g:'SIGMA',st:'diambil',picker:'Novira',info:'9 Nov 26 · Ambil sendiri (extension)',by:'Novira',noPhoto:true},
+  {id:'165236',bc:'4983164987654',ini:'DC',name:'Desktop Cute Figure Elaina - Casual Clothes Ver. Majo no Tabitabi',inv:'261108QTAYUS48',g:'SIGMA',st:'packed',packer:'Nofiyanti',info:'9 Nov 26 · 12:33 · Bekasi',loc:'BKS',by:'Novira'},
+  {id:'123055',bc:'4580590123055',ini:'ND',name:'Nendoroid Oguri Cap - Uma Musume: Pretty Derby (Re-Release)',inv:'261108QN9QGPSN',g:'SIGMA',st:'packed',packer:'Nofiyanti',info:'9 Nov 26 · 12:35 · Bekasi',loc:'BKS',by:'Novira'}
+];
+var tab='semua', sel={};
+var TABS=[['semua','Semua'],['belum','Belum diambil'],['diambil','Diambil'],['packed','Sudah dipacking']];
+var CAM='<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#78716C" stroke-width="1.8" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg>';
+var BOX='<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#78716C" stroke-width="1.8" aria-hidden="true"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/></svg>';
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function key(d){return d.inv+d.id}
+function shown(){return DATA.filter(function(d){return tab==='semua'||d.st===tab})}
+
+function renderTabs(){
+  var c={semua:DATA.length,belum:0,diambil:0,packed:0};DATA.forEach(function(d){c[d.st]++});
+  document.getElementById('tabs').innerHTML=TABS.map(function(t){
+    return '<button type="button" role="tab" class="tab" data-tab="'+t[0]+'" aria-selected="'+(tab===t[0])+'">'+t[1]+'<span>'+c[t[0]]+'</span></button>';
+  }).join('');
+}
+function status(d){
+  var picked=d.st!=='belum',packed=d.st==='packed';
+  var dots='<div class="steps" aria-hidden="true"><span class="d" style="background:var(--orange)"></span><span class="l" style="background:'+(picked?'var(--blue)':'')+'"></span><span class="d" style="background:'+(picked?'var(--blue)':'')+'"></span><span class="l" style="background:'+(packed?'var(--green)':'')+'"></span><span class="d" style="background:'+(packed?'var(--green)':'')+'"></span></div>';
+  if(d.st==='belum')return dots+'<div class="col"><span class="st" style="color:var(--orange-d)">Belum diambil</span><span class="sub">Menunggu '+d.age+'</span></div>';
+  if(d.st==='diambil')return dots+'<div class="col"><span class="st" style="color:var(--blue)">Diambil · '+esc(d.picker)+'</span><span class="sub">'+esc(d.info)+'</span></div>';
+  return dots+'<div class="col"><span class="st" style="color:var(--green)">Dipacking · '+esc(d.packer)+'</span><span class="sub">'+esc(d.info)+'</span></div>';
+}
+function photos(d){
+  var k=key(d),hasPick=d.st!=='belum'&&!d.noPhoto,hasPack=d.st==='packed';
+  var a=hasPick?'<button type="button" class="ph" data-ph="pick" data-k="'+k+'" aria-label="Lihat foto pick">'+CAM+'<span style="background:var(--blue)">PICK</span></button>':'<div class="empty">Belum<br>pick</div>';
+  var b=hasPack?'<button type="button" class="ph" data-ph="pack" data-k="'+k+'" aria-label="Lihat foto pack">'+BOX+'<span style="background:var(--green)">PACK · '+d.loc+'</span></button>':'<div class="empty">Belum<br>pack</div>';
+  return '<div class="photos">'+a+b+'</div>';
+}
+function renderRows(){
+  var rs=shown();
+  document.getElementById('rows').innerHTML=rs.map(function(d){
+    var k=key(d);
+    var opts=['SS','ALPHA','SIGMA'].map(function(o){return '<option'+(o===d.g?' selected':'')+'>'+o+'</option>'}).join('');
+    return '<div class="rw"><div class="grid" role="row">'+
+      '<span role="cell"><input type="checkbox" class="cb" data-k="'+k+'" aria-label="Pilih baris"'+(sel[k]?' checked':'')+'></span>'+
+      '<div class="item" role="cell"><div class="thumb" aria-hidden="true">'+d.ini+'</div><div class="col"><span class="nm" title="'+esc(d.name)+'">'+esc(d.name)+'</span><span class="sub">ID '+d.id+' · '+d.bc+'</span></div></div>'+
+      '<div class="col" role="cell"><a href="#" class="inv">'+d.inv+'</a><span class="chip">SHOPEE</span></div>'+
+      '<span role="cell" style="text-align:center;font-weight:600">1</span>'+
+      '<label role="cell"><span class="sr">Gudang</span><select class="gsel" style="font-weight:600">'+opts+'</select></label>'+
+      '<div role="cell">'+status(d)+'</div>'+
+      '<div class="col" role="cell"><span style="font-size:13px;font-weight:600">9 Nov 26</span><span class="sub">'+esc(d.by)+'</span></div>'+
+      '<div class="act" role="cell">'+(d.st==='packed'?'<button type="button" class="sm rem">↩ Reminder</button>':'')+'<button type="button" class="sm can">✕ Batalkan</button></div>'+
+      '</div>'+photos(d)+'</div>';
+  }).join('');
+  document.getElementById('cnt').textContent='Menampilkan '+rs.length+' baris';
+  var n=rs.filter(function(d){return sel[key(d)]}).length;
+  document.getElementById('bulk').classList.toggle('on',n>0);
+  document.getElementById('selc').textContent=n+' dipilih';
+  document.getElementById('all').checked=rs.length>0&&n===rs.length;
+}
+function render(){renderTabs();renderRows()}
+
+document.addEventListener('click',function(e){
+  var t=e.target.closest('[data-tab]');if(t){tab=t.dataset.tab;render();return}
+  var p=e.target.closest('[data-ph]');
+  if(p){var d=DATA.find(function(x){return key(x)===p.dataset.k});
+    var pick=p.dataset.ph==='pick';
+    document.getElementById('mt').textContent=pick?'Foto pick':'Foto pack · Bekasi';
+    document.getElementById('ms').textContent=d.inv+' · '+(pick?d.name:'dicek '+d.packer);
+    document.getElementById('mb').textContent='[Foto '+(pick?'pick':'pack')+' ukuran penuh]';
+    document.getElementById('modal').classList.add('on');return}
+  if(e.target.closest('[data-close]')||e.target.id==='modal'){document.getElementById('modal').classList.remove('on');return}
+  if(e.target.id==='clr'){sel={};renderRows();return}
+  if(e.target.closest('#tgl')){var b=document.getElementById('tgl'),on=b.getAttribute('aria-pressed')!=='true';
+    b.setAttribute('aria-pressed',on);document.getElementById('panel').classList.toggle('hidephotos',!on)}
+});
+document.addEventListener('change',function(e){
+  if(e.target.id==='all'){var on=e.target.checked;sel={};if(on)shown().forEach(function(d){sel[key(d)]=true});renderRows();return}
+  if(e.target.dataset.k){sel[e.target.dataset.k]=e.target.checked;renderRows()}
+});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')document.getElementById('modal').classList.remove('on')});
+render();
+</script>
+</body>
+</html>
